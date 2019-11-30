@@ -6,8 +6,8 @@ class S3Db implements Types.S3DbInterface {
 
 	constructor() {
 		const options: Types.Options = {
-			command: 'create',
-			databaseName: 'dasds4343dasd'
+			command: 'create-bucket',
+			databaseName: 'dasds4343ddsasd'
 		};
 		const resolve = (error: Types.Error | null, data: Types.Data) => {
 			if (error !== null) {

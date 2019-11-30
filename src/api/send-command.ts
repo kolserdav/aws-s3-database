@@ -8,14 +8,19 @@ import { Request } from 'aws-sdk/lib/request';
 const s3 = new AWS.S3()
 class SendCommand implements Types.SendCommandInterface {
 
+	helper: any = new S3DbHandlers.helper();
+
 	constructor(options: Types.Options, callback: Types.Resolve) {
 		const command = options.command;
 		switch(command) {
-			case 'create':
+			case 'create-bucket':
 					this.createBucket(options, callback);
 				break;
-			case 'delete': 
+			case 'delete-bucket': 
 					this.deleteBucket(options, callback);
+				break;
+			case 'get-bucket-acl':
+				this.getBucketAcl(options, callback);
 				break;
 		}
 	}
@@ -27,39 +32,36 @@ class SendCommand implements Types.SendCommandInterface {
 				LocationConstraint: "us-west-2",
 			}
 		};
-		console.log('Params', params)
-		const result: Request<object, AWSError> = s3.createBucket(params, (err: AWSError, data: object) => {
+		const result: Request<S3.Types.CreateBucketOutput, AWSError> = s3.createBucket(params, (err: AWSError, data: S3.Types.CreateBucketOutput) => {
 			const res = S3DbHandlers.setResponseFromAWS(err, data);
-			console.log('Result', res)
+			const response = this.helper.revertAttributes(res);
+			callback(response.err, response.res);
 		});
 	}
 
 	deleteBucket(options: Types.Options, callback: Types.Resolve): void {
-		const params: S3.Types.CreateBucketRequest = {
+		const params: S3.Types.DeleteBucketRequest = {
 			Bucket: options.databaseName,
-			CreateBucketConfiguration: {
-				LocationConstraint: "us-west-2",
-			}
 		};
 		console.log(params)
-		const result: Request<object, AWSError> = s3.deleteBucket(params, (err: AWSError, data: object) => {
-			if (err) {
-				const error: Types.Error = {
-					error: true,
-					message: err.message,
-					code: err.code,
-				};
-				callback(error, null);
-			}
-			else {
-				const result: Types.Data = {
-					error: false,
-					body: data
-				};
-				callback(null, result);
-			}
+		const result: Request<{}, AWSError> = s3.deleteBucket(params, (err: AWSError, data: {}) => {
+			const res = S3DbHandlers.setResponseFromAWS(err, data);
+			const response = this.helper.revertAttributes(res);
+			callback(response.err, response.res);
 		});
 	}
+
+	getBucketAcl(options: Types.Options, callback: Types.Resolve): void {
+    const params: S3.Types.GetBucketAclRequest = {
+      Bucket: options.databaseName,
+    };
+    const result: Request<S3.Types.GetBucketAclOutput, AWSError> = s3.getBucketAcl(params, (err: AWSError, data: S3.Types.GetBucketAclOutput) => {
+      const res = S3DbHandlers.setResponseFromAWS(err, data);
+			const response = this.helper.revertAttributes(res);
+			callback(response.err, response.res);
+		});
+  }
+
 } 
 
 export default SendCommand;

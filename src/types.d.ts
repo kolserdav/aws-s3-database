@@ -38,28 +38,32 @@ export interface Error {
 	code: string
 }
 
-export interface Response<T1, T2> {
-	result: T1 | T2
+export type PreparedObject = {
+	res: any,
+	err: any
 }
 
-export interface SetResponseFromAWS<T1, T2> {
-	(err: T1, data: T2): Response<Error, Data>
+export interface HelperInterface {
+	revertAttributes(res: Response<Error, Data>): PreparedObject
+}
+
+export interface Response<T1, T2> {
+	result: T1 | T2
 }
 
 export interface ApiInterface {
 	sendCommand(options: Options, callback: Resolve): Data | Error
 }
 
-export interface CreateBucketInterface {
+export type SendCommandType = {
 	(options: Options, callback: Resolve): void
 }
 
-export interface DeleteBucketInterface {
-	(options: Options, callback: Resolve): void
-}
 export interface SendCommandInterface {
-	createBucket: CreateBucketInterface
-	deleteBucket: DeleteBucketInterface
+	helper: any
+	createBucket: SendCommandType
+	deleteBucket: SendCommandType
+	getBucketAcl: SendCommandType
 }
 
 export interface S3DbInterface {
