@@ -1,0 +1,14 @@
+{
+  "name": "aws-s3-database",
+  "version": "0.0.1",
+  "author": "kolserdav",
+  "reposytory": "https://github.com/kolserdav/aws-s3-database",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.580.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.14"
+  }
+}
