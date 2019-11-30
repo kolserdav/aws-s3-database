@@ -5,6 +5,11 @@
   "reposytory": "https://github.com/kolserdav/aws-s3-database",
   "main": "dist/index.js",
   "license": "MIT",
+  "scripts": {
+  	"watch": "tsc -p . -w",
+	"build": "tsc -p .",
+	"start": "nodemon dist/index.js"
+  },
   "dependencies": {
     "aws-sdk": "^2.580.0"
   },

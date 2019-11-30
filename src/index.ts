@@ -1,59 +1,66 @@
-import { 
-	S3DbInterface, 
-	ErrorS3Db, 
-	ResolveS3DbType, 
-	OptionsS3DbType 
-} from './types';
-import ApiS3Db from '../index';
+import * as Types from './types';
+import ApiS3Db from './api/index';
 import S3 from 'aws-sdk/clients/s3';
 
-class S3Db implements S3DbInterface {
+class S3Db implements Types.S3DbInterface {
 
-	
-	createColumn = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
-
-	};
-
-	createDatabase = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
-
-	};
-
-	createTable = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
-
-	};
-
-	deleteDatabase = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
-
-	};
-
-	deleteTable = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
+	constructor() {
+		const options: Types.Options = {
+			command: 'create',
+			databaseName: 'dasds4343dasd'
+		};
+		const resolve = (error: Types.Error | null, data: Types.Data) => {
+			if (error !== null) {
+				console.log('Error', error)
+			}
+			console.log('Data', data)
+		}
+		new ApiS3Db.sendCommand(options, resolve);
+	}
+	createColumn = (options: Types.Options, callback: Types.Resolve): void => {
 
 	};
 
-	deleteColumn = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
+	createDatabase = (options: Types.Options, callback: Types.Resolve): void => {
 
 	};
 
-	deleteLine = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
+	createTable = (options: Types.Options, callback: Types.Resolve): void => {
 
 	};
 
-	getCellValue = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
+	deleteDatabase = (options: Types.Options, callback: Types.Resolve): void => {
 
 	};
 
-	insertLine = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
+	deleteTable = (options: Types.Options, callback: Types.Resolve): void => {
 
 	};
 
-	setCellValue = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
+	deleteColumn = (options: Types.Options, callback: Types.Resolve): void => {
 
 	};
 
-	updateValue = (options: OptionsS3DbType, callback: ResolveS3DbType): void => {
+	deleteLine = (options: Types.Options, callback: Types.Resolve): void => {
+
+	};
+
+	getCellValue = (options: Types.Options, callback: Types.Resolve): void => {
+
+	};
+
+	insertLine = (options: Types.Options, callback: Types.Resolve): void => {
+
+	};
+
+	setCellValue = (options: Types.Options, callback: Types.Resolve): void => {
+
+	};
+
+	updateValue = (options: Types.Options, callback: Types.Resolve): void => {
 
 	};
 }
-
+const s = new S3Db;
 
 

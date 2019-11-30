@@ -1,4 +1,4 @@
-import SendCommand from './src/api/send-command';
+import SendCommand from './send-command';
 
 
 const ApiS3Db = {
