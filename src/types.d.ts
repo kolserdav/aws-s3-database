@@ -9,9 +9,14 @@ export interface ColumnOptions {
 
 export interface Data {
 	error: boolean
-	body: string | object
+	body: object
+	result: object | string
 	column?: string
 	cell?: string
+}
+
+export interface Wait {
+	()
 }
 
 export interface CellOptions {
@@ -27,9 +32,18 @@ export interface Resolve {
 export interface Options {
 	command: string
 	databaseName: string
+	tableName?: string
+	body?: object
+	key?: string
+	range?: string
+	file?: string
+	stdError?: any
+	result?: any
 	data?: Data;
 	cellOptions?: CellOptions
 	columnOptions?: ColumnOptions
+	maxKeys?: number
+	
 }
 
 export interface Error {
@@ -64,6 +78,7 @@ export interface SendCommandInterface {
 	createBucket: SendCommandType
 	deleteBucket: SendCommandType
 	getBucketAcl: SendCommandType
+	getObject: SendCommandType
 }
 
 export interface S3DbInterface {

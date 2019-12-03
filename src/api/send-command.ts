@@ -8,22 +8,69 @@ import { Request } from 'aws-sdk/lib/request';
 const s3 = new AWS.S3()
 class SendCommand implements Types.SendCommandInterface {
 
-	helper: any = new S3DbHandlers.helper();
+	helper: any;
 
-	constructor(options: Types.Options, callback: Types.Resolve) {
-		const command = options.command;
-		switch(command) {
-			case 'create-bucket':
-					this.createBucket(options, callback);
-				break;
-			case 'delete-bucket': 
-					this.deleteBucket(options, callback);
-				break;
-			case 'get-bucket-acl':
-				this.getBucketAcl(options, callback);
-				break;
-		}
+	constructor() {
+		this.helper = new S3DbHandlers.helper();
 	}
+
+	getObject(options: Types.Options, callback: Types.Resolve): void {
+    const params: S3.Types.GetObjectRequest = {
+			Bucket: options.databaseName,
+			Key: options.key,
+			Range: options.range
+    };
+    const result: Request<S3.Types.GetObjectOutput, AWSError> = s3.getObject(params, (err: AWSError, data: S3.Types.GetObjectOutput) => {
+      const res = S3DbHandlers.setResponseFromAWS(err, data);
+      const response = this.helper.revertAttributes(res);
+			response.res.result = JSON.stringify(response.res.body.Body.toString());
+      callback(response.err, response.res);
+    });
+	}
+
+
+	listObjects(options: Types.Options, callback: Types.Resolve): void {
+    const params: S3.Types.ListObjectsRequest = {
+			Bucket: options.databaseName,
+			MaxKeys: options.maxKeys
+    };
+    const result: Request<S3.Types.ListObjectsOutput, AWSError> = s3.listObjects(params, (err: AWSError, data: S3.Types.ListObjectsOutput) => {
+      const res = S3DbHandlers.setResponseFromAWS(err, data);
+			const response = this.helper.revertAttributes(res);
+			if (response.res !== null && !response.res.error) {
+				response.res.result = response.res.body.Contents;
+				response.res.body.Contents = undefined;
+			}
+      callback(response.err, response.res);
+    });
+	}
+
+	headObject(options: Types.Options, callback: Types.Resolve): void {
+    const params: S3.Types.HeadObjectRequest = {
+			Bucket: options.databaseName,
+			Key: options.key,
+    };
+    const result: Request<S3.Types.HeadObjectOutput, AWSError> = s3.putObject(params, (err: AWSError, data: S3.Types.HeadObjectOutput) => {
+			const res = S3DbHandlers.setResponseFromAWS(err, data);
+      const response = this.helper.revertAttributes(res);
+      callback(response.err, response.res);
+    });
+	}
+
+	putObject(options: Types.Options, callback: Types.Resolve): void {
+    const params: S3.Types.PutObjectRequest = {
+			Bucket: options.databaseName,
+			Key: options.key,
+			Body: JSON.stringify(options.body),
+			ContentType: 'application/json'
+    };
+    const result: Request<S3.Types.PutObjectOutput, AWSError> = s3.putObject(params, (err: AWSError, data: S3.Types.PutObjectOutput) => {
+			const res = S3DbHandlers.setResponseFromAWS(err, data);
+      const response = this.helper.revertAttributes(res);
+      callback(response.err, response.res);
+    });
+  }
+
 
 	createBucket(options: Types.Options, callback: Types.Resolve): void {
 		const params: S3.Types.CreateBucketRequest = {

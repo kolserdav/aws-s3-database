@@ -17,7 +17,8 @@ export default function SetResponseFromAWS(err: AWSError, data: object): Types.R
       else {
         const body: Types.Data = {
           error: false,
-          body: data
+					body: data,
+					result: {}
         };
 				resObj = {
 					result: body

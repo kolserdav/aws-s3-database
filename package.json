@@ -11,7 +11,7 @@
 	"start": "nodemon dist/index.js"
   },
   "dependencies": {
-    "aws-sdk": "^2.580.0"
+    "aws-sdk": "^2.581.0"
   },
   "devDependencies": {
     "@types/node": "^12.12.14"
