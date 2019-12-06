@@ -7,16 +7,17 @@ export interface ColumnOptions {
 	
 }
 
-export interface Data {
-	error: boolean
-	body: object
-	result: object | string
-	column?: string
-	cell?: string
+export interface Body {
+	message?: string
+	Contents?: object
 }
 
-export interface Wait {
-	()
+export interface Data {
+	error: boolean
+	body: Body
+	result: object
+	column?: string
+	cell?: string
 }
 
 export interface CellOptions {
@@ -36,6 +37,8 @@ export interface Options {
 	body?: object
 	key?: string
 	range?: string
+	table?: string
+	column?: string
 	file?: string
 	stdError?: any
 	result?: any
@@ -43,13 +46,15 @@ export interface Options {
 	cellOptions?: CellOptions
 	columnOptions?: ColumnOptions
 	maxKeys?: number
-	
+	delimiter?: string
+	prefix?: string
+	deleteObjects?: {Key: string}[]
 }
 
 export interface Error {
 	error: boolean
 	message: string
-	code: string
+	code: string | object
 }
 
 export type PreparedObject = {
