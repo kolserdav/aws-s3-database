@@ -12,7 +12,7 @@
 	"test": "nodemon dist/test/client.js"
   },
   "dependencies": {
-    "aws-sdk": "^2.581.0"
+    "aws-sdk": "^2.814.0"
   },
   "devDependencies": {
     "@types/node": "^12.12.14"
